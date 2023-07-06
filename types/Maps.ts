@@ -1,23 +1,21 @@
-// Maps 
-
-/*
-Azagor
-Basra
-Construction
-District
-Dusty Dew
-Eduardovo
-Frugis
-Isle
-Lonovo
-Multu Islands
-Namak
-Oil Dunes
-River
-Salhan
-Sandy Sunset
-TensaTown
-Valley
-Wakistan
-Wine Paradise
-*/
+export const Maps = [
+  "Azagor",
+  "Basra",
+  "Construction",
+  "District",
+  "DustyDew",
+  "Eduardovo",
+  "Frugis",
+  "Isle",
+  "Lonovo",
+  "MultuIslands",
+  "Namak",
+  "OilDunes",
+  "River",
+  "Salhan",
+  "SandySunset",
+  "TensaTown",
+  "Valley",
+  "Wakistan",
+  "WineParadise"
+];

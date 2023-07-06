@@ -1,12 +1,18 @@
 import Image from 'next/image';
 import { Server } from '../types/Server';
+import { Maps } from '../types/Maps';
 
 type Props = {
   server: Server;
 }
 
 export default function ServerRow({ server }: Props) {
-  let imagePath = "/images/maps/" + server.Map.toLowerCase() + ".png";
+  // Default to a blank map image if it doesn't exist yet
+  let imagePath = "/images/maps/unknown.png";
+
+  if (Maps.includes(server.Map)) {
+    imagePath = "/images/maps/" + server.Map.toLowerCase() + ".png";
+  }
 
   return (
     <tr>

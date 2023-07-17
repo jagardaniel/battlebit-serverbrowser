@@ -8,6 +8,7 @@ import { Server } from '../types/Server';
 export default function FilterableServerTable() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Server[]>([]);
+  const [filterText, setFilterText] = useState('');
 
   async function getServers() {
     try {
@@ -28,10 +29,17 @@ export default function FilterableServerTable() {
   return (
     <div>
       <div className="bg-slate-800 p-3 rounded-t-lg">
-        <FilterBar />
+        <FilterBar
+          filterText={filterText}
+          onFilterTextChange={setFilterText}
+        />
       </div>
       <div className="bg-slate-800">
-        <ServerTable servers={data} isLoading={isLoading} />
+        <ServerTable
+          servers={data}
+          isLoading={isLoading}
+          filterText={filterText}
+        />
       </div>
     </div>
   );

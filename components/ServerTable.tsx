@@ -5,14 +5,24 @@ import Spinner from './Spinner';
 type Props = {
   servers: Server[];
   isLoading: boolean;
+  filterText: string;
 }
 
-export default function ServerTable({ servers, isLoading }: Props) {
+export default function ServerTable({ servers, isLoading, filterText }: Props) {
   const rows: React.ReactElement[] = [];
 
   servers.forEach((server) => {
     // Ignore official servers for now, this should be a filter from FilterBar
     if (server.IsOfficial) {
+      return;
+    }
+
+    // Filter search input
+    if (
+      server.Name.toLowerCase().indexOf(
+        filterText.toLowerCase()
+      ) === -1
+    ) {
       return;
     }
 

@@ -1,4 +1,11 @@
-export default function FilterBar() {
+import { Dispatch, SetStateAction } from "react";
+
+type Props = {
+  filterText: string;
+  onFilterTextChange: Dispatch<SetStateAction<string>>;
+}
+
+export default function FilterBar({ filterText, onFilterTextChange }: Props) {
   return (
     <div className="mb-1">
       <label htmlFor="table-search" className="sr-only">Search</label>
@@ -12,7 +19,14 @@ export default function FilterBar() {
               </path>
           </svg>
        </div>
-          <input type="text" id="table-search" className="border text-sm rounded-lg block w-80 pl-10 p-2.5 bg-slate-700 border-gray-600 placeholder-slate-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search by name" />
+          <input 
+            type="text"
+            id="table-search"
+            className="border text-sm rounded-lg block w-80 pl-10 p-2.5 bg-slate-700 border-gray-600 placeholder-slate-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search by name"
+            value={filterText}
+            onChange={(e) => onFilterTextChange(e.target.value)}
+          />
         </div>
     </div>
   );

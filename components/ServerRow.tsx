@@ -1,18 +1,15 @@
 import Image from 'next/image';
 import { Server } from '../types/Server';
 import { Maps } from '../types/Maps';
+import { GameModes } from '../types/GameModes';
 
 type Props = {
   server: Server;
 }
 
 export default function ServerRow({ server }: Props) {
-  // Default to a blank map image if it doesn't exist yet
-  let imagePath = "/images/maps/unknown.png";
-
-  if (Maps.includes(server.Map)) {
-    imagePath = "/images/maps/" + server.Map.toLowerCase() + ".png";
-  }
+  let imageName = (Maps.includes(server.Map)) ? server.Map.toLowerCase() : "unknown";
+  let gameMode = GameModes[server.Gamemode as keyof typeof GameModes] || "Unknown mode";
 
   return (
     <tr>
@@ -20,23 +17,25 @@ export default function ServerRow({ server }: Props) {
         <div className="flex flex-row">
           <div className="pr-3 m-1">
             <Image
-              src={imagePath}
+              src={"/images/maps/" + imageName + ".png"}
               width={87}
               height={43}
               alt={server.Map}
             />
           </div>
           <div>
-            <div className="text-base">{server.Name}</div>
-            <div className="text-slate-300 text-xs mt-1 mb-1">{server.Gamemode} • {server.Map} ({server.MapSize}) • {server.Hz}Hz</div>
+            <div className="text-base mt-1">{server.Name}</div>
+            <div className="text-slate-300 text-xs mb-1">
+              {gameMode} • {server.Map} ({server.MapSize}) • {server.Hz}Hz
+            </div>
           </div>
         </div>
       </td>
       <td className="px-4 py-2">
-        {server.Players}/{server.MaxPlayers} {server.QueuePlayers > 0 ? '(' + server.QueuePlayers + ')': ''}
+        {server.Players}/{server.MaxPlayers} {server.QueuePlayers > 0 && '(' + server.QueuePlayers + ')'}
       </td>
       <td className="px-4 py-2">
-        {server.HasPassword.toString()}/{server.AntiCheat}/{server.IsOfficial.toString()}
+        TODO
       </td>
     </tr>
   );

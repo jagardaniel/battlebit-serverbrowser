@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="container mx-auto max-w-6xl my-20 shadow-md">
+        <div className="container mx-auto max-w-6xl my-10">
           {children}
         </div>
       </body>

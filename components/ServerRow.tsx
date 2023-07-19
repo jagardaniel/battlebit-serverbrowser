@@ -3,7 +3,6 @@ import { Server } from '../types/Server';
 import { Maps } from '../types/Maps';
 import { GameModes } from '../types/GameModes';
 import { Regions } from '../types/Regions';
-
 import { countryCodeEmoji } from 'country-code-emoji';
 
 type Props = {
@@ -48,7 +47,7 @@ export default function ServerRow({ server }: Props) {
         {server.Players}/{server.MaxPlayers} {server.QueuePlayers > 0 && '(' + server.QueuePlayers + ')'}
       </td>
       <td className="px-4 py-2">
-        TODO
+        todo
       </td>
     </tr>
   );

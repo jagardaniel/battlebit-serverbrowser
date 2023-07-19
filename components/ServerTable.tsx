@@ -1,20 +1,48 @@
 import ServerRow from './ServerRow';
 import { Server } from '../types/Server';
 import Spinner from './Spinner';
+import { Option } from '../types/Option';
 
 type Props = {
   servers: Server[];
   isLoading: boolean;
   filterText: string;
+  selectedGameModes: Option[];
+  selectedMaps: Option[];
+  selectedOfficial: Option[];
+  selectedRegions: Option[];
 }
 
-export default function ServerTable({ servers, isLoading, filterText }: Props) {
+export default function ServerTable({ servers, isLoading, filterText, selectedGameModes, selectedMaps, selectedOfficial, selectedRegions }: Props) {
   const rows: React.ReactElement[] = [];
 
   servers.forEach((server) => {
-    // Ignore official servers for now, this should be a filter from FilterBar
-    if (server.IsOfficial) {
-      return;
+    // Filter based on selected official type
+    if (selectedOfficial.length > 0) {
+      if (!selectedOfficial.some(official => official.value == server.IsOfficial.toString())) {
+        return;
+      }
+    }
+
+    // Filter based on game mode
+    if (selectedGameModes.length > 0) {
+      if (!selectedGameModes.some(mode => mode.value == server.Gamemode)) {
+        return;
+      }
+    }
+
+    // Filter based on selected maps
+    if (selectedMaps.length > 0) {
+      if (!selectedMaps.some(map => map.value == server.Map)) {
+        return;
+      }
+    }
+
+    // Filter based on region
+    if (selectedRegions.length > 0) {
+      if (!selectedRegions.some(region => region.value == server.Region)) {
+        return;
+      }
     }
 
     // Filter search input

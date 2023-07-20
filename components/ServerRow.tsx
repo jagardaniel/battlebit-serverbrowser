@@ -4,6 +4,7 @@ import { Maps } from '../types/Maps';
 import { GameModes } from '../types/GameModes';
 import { Regions } from '../types/Regions';
 import { countryCodeEmoji } from 'country-code-emoji';
+import { UnlockFill, LockFill } from 'react-bootstrap-icons';
 
 type Props = {
   server: Server;
@@ -15,6 +16,9 @@ export default function ServerRow({ server }: Props) {
 
   let regionCode = Regions[server.Region as keyof typeof Regions];
   let flagChar = (regionCode) ? countryCodeEmoji(regionCode) : "?";
+
+  let iconSize = 18;
+  let lockIcon = (server.HasPassword) ? <LockFill size={iconSize} /> : <UnlockFill size={iconSize} className="text-slate-700" />;
 
   return (
     <tr>
@@ -44,10 +48,16 @@ export default function ServerRow({ server }: Props) {
         </div>
       </td>
       <td className="px-4 py-2">
-        {server.Players}/{server.MaxPlayers} {server.QueuePlayers > 0 && '(' + server.QueuePlayers + ')'}
+        <div className="grid grid-cols-3 text-slate-500">
+          <div></div>
+          <div></div>
+          <div>
+            {lockIcon}
+          </div>
+        </div>
       </td>
       <td className="px-4 py-2">
-        todo
+        {server.Players} / {server.MaxPlayers} {server.QueuePlayers > 0 && '(' + server.QueuePlayers + ')'}
       </td>
     </tr>
   );

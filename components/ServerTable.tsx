@@ -65,9 +65,9 @@ export default function ServerTable({ servers, isLoading, filterText, selectedGa
     <table className="table-fixed w-full border-collapse text-left text-sm">
       <thead className="bg-slate-700 uppercase text-gray-50">
         <tr>
-          <th className="px-4 py-3 w-2/3">Server</th>
+          <th className="px-4 py-3 w-9/12">Server</th>
+          <th className="px-4 py-3 w-36"></th>
           <th className="px-4 py-3">Players</th>
-          <th className="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody className="divide-y divide-slate-900 border-t border-slate-900 text-slate-400">

@@ -1,16 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## battlebit-serverbrowser
 
-## Getting Started
+A pretty useless web based server browser for the game BattleBit Remastered.
 
-First, run the development server:
+https://battlebit-browser.vercel.app
 
+
+### Development
+
+#### Requirements
+* Node.js 16.8 or later (required by Next.js)
+
+#### Install and run
+
+Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+$ git clone https://github.com/jagardaniel/battlebit-serverbrowser.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install required packages
+```bash
+$ cd battlebit-serverbrowser/
+$ npm install
+```
 
+Run the development server
+```bash
+$ npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+
+### Deployment
+
+The application will automatically be deployed to Vercel on a push to the `main` branch.

@@ -3,8 +3,16 @@ import { GameModes } from "../types/GameModes";
 import { Maps } from "../types/Maps";
 import { Regions } from "../types/Regions";
 import { Option } from "../types/Option";
-
 import { MultiSelect } from "react-multi-select-component";
+
+// Set available options for each multi-select form
+const gameModeOptions = Object.entries(GameModes).map(([key, value]) => ({ label: value, value: key }))
+const regionsOptions = Object.entries(Regions).map(([key]) => ({ label: key.split("_")[0], value: key }))
+const mapOptions = Maps.map(item => ({ label: item, value: item }))
+const officialOptions = [
+  {label: "Official", value: "true"},
+  {label: "Community", value: "false"}
+];
 
 type Props = {
   filterText: string;
@@ -19,29 +27,19 @@ type Props = {
   onSelectedRegionsChange: Dispatch<SetStateAction<Option[]>>;
 }
 
-export default function FilterBar({ filterText, selectedGameModes, selectedMaps, selectedOfficial, selectedRegions, onFilterTextChange, onSelectedGameModeChange, onSelectedMapsChange, onSelectedOfficialChange, onSelectedRegionsChange } : Props) {
-  // Create multiselect for all game modes
-  const gameModeOptions: Option[] = [];
-  for (const [key, value] of Object.entries(GameModes)) {
-    gameModeOptions.push({label: value, value: key});
-  }
-
-  const regionsOptions = [];
-  for (const [key, value] of Object.entries(Regions)) {
-    const regionSplit = key.split("_");
-    regionsOptions.push({label: regionSplit[0], value: key});
-  }
-
-  const mapOptions = [];
-  for (const map of Maps) {
-    mapOptions.push({label: map, value: map});
-  }
-
-  const officialOptions = [
-    {label: "Official", value: "true"},
-    {label: "Community", value: "false"}
-  ];
-
+export default function FilterBar({
+  filterText,
+  selectedGameModes,
+  selectedMaps,
+  selectedOfficial,
+  selectedRegions,
+  onFilterTextChange,
+  onSelectedGameModeChange,
+  onSelectedMapsChange,
+  onSelectedOfficialChange,
+  onSelectedRegionsChange
+}: Props) {
+  // Is there a way to create a more general valueRenderer since three of them are very similar?
   const gameModesValueRenderer = (selected: Option[], _options: Option[]) => {
     return selected.length
       ? selected.length + " mode(s) selected"
@@ -65,11 +63,6 @@ export default function FilterBar({ filterText, selectedGameModes, selectedMaps,
     ? selected.map(function(elem){return elem.label}).join(", ")
       : "Server type";
   };
-
-  // Use instead?
-  useEffect(() => {
-
-  }, []);
 
   return (
     <div className="grid grid-cols-6 gap-2 mb-1">

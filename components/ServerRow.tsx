@@ -4,7 +4,7 @@ import { Maps } from '../types/Maps';
 import { GameModes } from '../types/GameModes';
 import { Regions } from '../types/Regions';
 import { countryCodeEmoji } from 'country-code-emoji';
-import { UnlockFill, LockFill } from 'react-bootstrap-icons';
+import { UnlockFill, LockFill, ChevronDoubleUp } from 'react-bootstrap-icons';
 
 type Props = {
   server: Server;
@@ -19,6 +19,7 @@ export default function ServerRow({ server }: Props) {
 
   let iconSize = 18;
   let lockIcon = (server.HasPassword) ? <LockFill size={iconSize} /> : <UnlockFill size={iconSize} className="text-slate-700" />;
+  let officialIcon = (server.IsOfficial) ?  <ChevronDoubleUp size={iconSize} /> : <ChevronDoubleUp size={iconSize} className="text-slate-700" />;
 
   return (
     <tr>
@@ -48,11 +49,19 @@ export default function ServerRow({ server }: Props) {
         </div>
       </td>
       <td className="px-4 py-2">
-        <div className="grid grid-cols-3 text-slate-500">
+        <div className="grid grid-cols-3 text-slate-400">
           <div></div>
-          <div></div>
-          <div>
+          <div className="group relative w-max">
             {lockIcon}
+            <span className="pointer-events-none bg-slate-600 text-slate-300 text-sm absolute -top-7 left-0 px-1 py-0.5 rounded w-max opacity-0 transition-opacity group-hover:opacity-100">
+                {(server.HasPassword) ? "Password" : "No password"}
+            </span>
+          </div>
+          <div className="group relative w-max">
+            {officialIcon}
+            <span className="pointer-events-none bg-slate-600 text-slate-300 text-sm absolute -top-7 left-0 px-1 py-0.5 rounded w-max opacity-0 transition-opacity group-hover:opacity-100">
+                {(server.IsOfficial) ? "Official server" : "Community server"}
+              </span>
           </div>
         </div>
       </td>

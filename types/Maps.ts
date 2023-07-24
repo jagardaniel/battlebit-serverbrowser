@@ -3,7 +3,7 @@ export const Maps = [
   "Basra",
   "Construction",
   "District",
-  "DustyDew",
+  "Dustydew",
   "Eduardovo",
   "Frugis",
   "Isle",

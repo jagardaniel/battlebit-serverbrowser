@@ -16,6 +16,7 @@ export const Maps = [
   "SandySunset",
   "TensaTown",
   "Valley",
+  "VoxelLand",
   "Wakistan",
   "WineParadise"
 ];

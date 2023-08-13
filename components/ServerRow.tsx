@@ -1,73 +1,98 @@
-import Image from 'next/image';
-import { Server } from '../types/Server';
-import { Maps } from '../types/Maps';
-import { GameModes } from '../types/GameModes';
-import { Regions } from '../types/Regions';
-import { countryCodeEmoji } from 'country-code-emoji';
-import { UnlockFill, LockFill, ChevronDoubleUp } from 'react-bootstrap-icons';
+import Image from "next/image";
+import { Server } from "@/types/Server";
+import { Maps } from "@/types/Maps";
+import { GameModes } from "@/types/GameModes";
+import { Regions } from "@/types/Regions";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import Tooltip from "@mui/material/Tooltip";
 
 type Props = {
   server: Server;
-}
+};
 
 export default function ServerRow({ server }: Props) {
-  let imageName = (Maps.includes(server.Map)) ? server.Map.toLowerCase() : "unknown";
-  let gameMode = GameModes[server.Gamemode as keyof typeof GameModes] || "Unknown mode";
+  let imageName = Maps.includes(server.Map)
+    ? server.Map.toLowerCase()
+    : "unknown";
 
-  let regionCode = Regions[server.Region as keyof typeof Regions];
-  let flagChar = (regionCode) ? countryCodeEmoji(regionCode) : "?";
+  let gameMode =
+    GameModes[server.Gamemode as keyof typeof GameModes] || "Unknown mode";
 
-  let iconSize = 18;
-  let lockIcon = (server.HasPassword) ? <LockFill size={iconSize} /> : <UnlockFill size={iconSize} className="text-slate-700" />;
-  let officialIcon = (server.IsOfficial) ?  <ChevronDoubleUp size={iconSize} /> : <ChevronDoubleUp size={iconSize} className="text-slate-700" />;
+  let regionFlagChar = Regions[server.Region as keyof typeof Regions] || "🌍";
+
+  let lockIcon = server.HasPassword ? (
+    <LockIcon />
+  ) : (
+    <LockOpenIcon sx={{ color: "#334155" }} />
+  );
+
+  let officialIcon = server.IsOfficial ? (
+    <KeyboardDoubleArrowUpIcon />
+  ) : (
+    <KeyboardDoubleArrowUpIcon sx={{ color: "#334155" }} />
+  );
 
   return (
-    <tr>
-      <td className="px-3 py-2">
-        <div className="flex flex-row">
-          <div className="pr-3 m-1">
-            <Image
-              src={"/images/maps/" + imageName + ".png"}
-              width={87}
-              height={43}
-              alt={server.Map}
-            />
-          </div>
-          <div>
-            <div className="text-base mt-0.5">{server.Name}</div>
-            <div className="text-slate-300 text-xs mb-1">
-              <div className="flex gap-1.5 place-content-center">
-                <div className="flex-none text-lg -mt-1">
-                  {flagChar}
-                </div>
-                <div className="flex-auto pt-0.5">
+    <TableRow sx={{ py: 1.2, borderBottom: 1, borderColor: "#0f172a" }}>
+      <TableCell sx={{ py: 1.2 }}>
+        <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Avatar
+              variant="square"
+              sx={{
+                width: 87,
+                height: 43,
+                boxShadow: 1,
+              }}
+            >
+              <Image
+                src={"/images/maps/" + imageName + ".png"}
+                alt={server.Map}
+                fill
+              />
+            </Avatar>
+            <Stack>
+              <Typography noWrap>{server.Name}</Typography>
+              <Stack spacing={0.8} direction="row" alignItems="center">
+                <Typography variant="body1">{regionFlagChar}</Typography>
+                <Typography variant="caption" color="text.secondary">
                   {gameMode} • {server.Map} ({server.MapSize}) • {server.Hz}Hz
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </td>
-      <td className="px-4 py-2">
-        <div className="grid grid-cols-3 text-slate-400">
-          <div></div>
-          <div className="group relative w-max">
+                </Typography>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Box>
+      </TableCell>
+      <TableCell>
+        <Stack spacing={3} direction="row">
+          <Tooltip
+            title={server.HasPassword ? "Password protected" : "No password"}
+            placement="top-start"
+          >
             {lockIcon}
-            <span className="pointer-events-none bg-slate-600 text-slate-300 text-sm absolute -top-7 left-0 px-1 py-0.5 rounded w-max opacity-0 transition-opacity group-hover:opacity-100">
-                {(server.HasPassword) ? "Password" : "No password"}
-            </span>
-          </div>
-          <div className="group relative w-max">
+          </Tooltip>
+          <Tooltip
+            title={server.IsOfficial ? "Official server" : "Community server"}
+            placement="top-start"
+          >
             {officialIcon}
-            <span className="pointer-events-none bg-slate-600 text-slate-300 text-sm absolute -top-7 left-0 px-1 py-0.5 rounded w-max opacity-0 transition-opacity group-hover:opacity-100">
-                {(server.IsOfficial) ? "Official server" : "Community server"}
-              </span>
-          </div>
-        </div>
-      </td>
-      <td className="px-4 py-2">
-        {server.Players} / {server.MaxPlayers} {server.QueuePlayers > 0 && '(' + server.QueuePlayers + ')'}
-      </td>
-    </tr>
+          </Tooltip>
+        </Stack>
+      </TableCell>
+      <TableCell>
+        <Typography>
+          {server.Players} / {server.MaxPlayers}{" "}
+          {server.QueuePlayers > 0 && "(" + server.QueuePlayers + ")"}
+        </Typography>
+      </TableCell>
+    </TableRow>
   );
 }

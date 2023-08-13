@@ -7,5 +7,5 @@ export const GameModes = {
   INFCONQ: "Infantry Conquest",
   RUSH: "Rush",
   TDM: "Team Deathmatch",
-  VoxelFortify: "Voxel Fortify"
+  VoxelFortify: "Voxel Fortify",
 };

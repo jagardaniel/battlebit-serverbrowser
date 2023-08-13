@@ -1,136 +1,97 @@
-import { useEffect, Dispatch, SetStateAction } from "react";
-import { GameModes } from "../types/GameModes";
-import { Maps } from "../types/Maps";
-import { Regions } from "../types/Regions";
-import { Option } from "../types/Option";
-import { MultiSelect } from "react-multi-select-component";
-
-// Set available options for each multi-select form
-const gameModeOptions = Object.entries(GameModes).map(([key, value]) => ({ label: value, value: key }))
-const regionsOptions = Object.entries(Regions).map(([key]) => ({ label: key.split("_")[0], value: key }))
-const mapOptions = Maps.map(item => ({ label: item, value: item }))
-const officialOptions = [
-  {label: "Official", value: "true"},
-  {label: "Community", value: "false"}
-];
+import { ServerFilters } from "@/types/ServerFilters";
+import { GameModes } from "@/types/GameModes";
+import { Maps } from "@/types/Maps";
+import { Regions } from "@/types/Regions";
+import { MultiSelectItem } from "@/types/MultiSelectItem";
+import FilterMultiSelect from "./FilterMultiSelect";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { SelectChangeEvent } from "@mui/material/Select";
+import Button from "@mui/material/Button";
 
 type Props = {
-  filterText: string;
-  selectedGameModes: Option[];
-  selectedMaps: Option[];
-  selectedOfficial: Option[];
-  selectedRegions: Option[];
-  onFilterTextChange: Dispatch<SetStateAction<string>>;
-  onSelectedGameModeChange: Dispatch<SetStateAction<Option[]>>;
-  onSelectedMapsChange: Dispatch<SetStateAction<Option[]>>;
-  onSelectedOfficialChange: Dispatch<SetStateAction<Option[]>>;
-  onSelectedRegionsChange: Dispatch<SetStateAction<Option[]>>;
-}
+  serverFilters: ServerFilters;
+  onMultiSelectChange: (event: SelectChangeEvent<string[]>) => void;
+};
+
+// Prepare available items for each multiselect
+const gameModeItems: MultiSelectItem[] = Object.entries(GameModes).map(
+  ([key, value]) => ({
+    key: key,
+    value: value,
+  })
+);
+const mapsItems: MultiSelectItem[] = Maps.map((item) => ({
+  key: item,
+  value: item,
+}));
+const regionsItems: MultiSelectItem[] = Object.entries(Regions).map(
+  ([key]) => ({
+    key: key,
+    value: key.split("_")[0],
+  })
+);
+const typesItems: MultiSelectItem[] = [
+  { value: "Official", key: "true" },
+  { value: "Community", key: "false" },
+];
 
 export default function FilterBar({
-  filterText,
-  selectedGameModes,
-  selectedMaps,
-  selectedOfficial,
-  selectedRegions,
-  onFilterTextChange,
-  onSelectedGameModeChange,
-  onSelectedMapsChange,
-  onSelectedOfficialChange,
-  onSelectedRegionsChange
+  serverFilters,
+  onMultiSelectChange,
 }: Props) {
-  // Is there a way to create a more general valueRenderer since three of them are very similar?
-  const gameModesValueRenderer = (selected: Option[], _options: Option[]) => {
-    return selected.length
-      ? selected.length + " mode(s) selected"
-      : "Game modes";
-  };
-
-  const mapsValueRenderer = (selected: Option[], _options: Option[]) => {
-    return selected.length
-      ? selected.length + " map(s) selected"
-      : "Maps";
-  };
-
-  const regionsValueRenderer = (selected: Option[], _options: Option[]) => {
-    return selected.length
-      ? selected.length + " region(s) selected"
-      : "Regions";
-  };
-
-  const officialValueRenderer = (selected: Option[], _options: Option[]) => {
-    return selected.length
-    ? selected.map(function(elem){return elem.label}).join(", ")
-      : "Server type";
-  };
-
   return (
-    <div className="grid grid-cols-6 gap-2 mb-1">
-      <div className="col-span-2">
-        <label htmlFor="table-search" className="sr-only">Search</label>
-        <div className="relative mt-1">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  clip-rule="evenodd">
-                </path>
-            </svg>
-          </div>
-            <input 
-              type="text"
-              id="table-search"
-              className="border text-sm rounded-lg block pl-10 p-2.5 bg-slate-700 border-gray-600 placeholder-slate-400 text-white w-11/12 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search by name"
-              value={filterText}
-              onChange={(e) => onFilterTextChange(e.target.value)}
-            />
-        </div>
-      </div>
-      <div className="text-sm placeholder-slate-400 text-slate-300 mt-1">
-        <MultiSelect
-          options={gameModeOptions}
-          value={selectedGameModes}
-          onChange={onSelectedGameModeChange}
-          labelledBy="Select game modes"
-          disableSearch={true}
-          hasSelectAll={false}
-          valueRenderer={gameModesValueRenderer}
+    <Stack direction="row" spacing={2}>
+      <Box sx={{ width: "20%" }}>
+        <TextField
+          hiddenLabel
+          name="searchName"
+          size="small"
+          placeholder="Search name..."
+          variant="outlined"
         />
-      </div>
-      <div className="text-sm placeholder-slate-400 text-slate-300 mt-1">
-        <MultiSelect
-          options={mapOptions}
-          value={selectedMaps}
-          onChange={onSelectedMapsChange}
-          labelledBy="Select maps"
-          hasSelectAll={false}
-          valueRenderer={mapsValueRenderer}
+      </Box>
+      <Box sx={{ width: "20%" }}>
+        <FilterMultiSelect
+          name="gameModes"
+          placeholder="Game modes"
+          renderValueText="mode(s)"
+          items={gameModeItems}
+          values={serverFilters.gameModes}
+          onMultiSelectChange={onMultiSelectChange}
         />
-      </div>
-      <div className="text-sm placeholder-slate-400 text-slate-300 mt-1">
-        <MultiSelect
-          options={regionsOptions}
-          value={selectedRegions}
-          onChange={onSelectedRegionsChange}
-          labelledBy="Select regions"
-          disableSearch={true}
-          hasSelectAll={false}
-          valueRenderer={regionsValueRenderer}
+      </Box>
+      <Box sx={{ width: "20%" }}>
+        <FilterMultiSelect
+          name="maps"
+          placeholder="Maps"
+          renderValueText="maps(s)"
+          items={mapsItems}
+          values={serverFilters.maps}
+          onMultiSelectChange={onMultiSelectChange}
         />
-      </div>
-      <div className="text-sm placeholder-slate-400 text-slate-300 mt-1">
-        <MultiSelect
-          options={officialOptions}
-          value={selectedOfficial}
-          onChange={onSelectedOfficialChange}
-          labelledBy="Select type"
-          disableSearch={true}
-          hasSelectAll={false}
-          valueRenderer={officialValueRenderer}
+      </Box>
+      <Box sx={{ width: "20%" }}>
+        <FilterMultiSelect
+          name="regions"
+          placeholder="Regions"
+          renderValueText="region(s)"
+          items={regionsItems}
+          values={serverFilters.regions}
+          onMultiSelectChange={onMultiSelectChange}
         />
-      </div>
-    </div>
+      </Box>
+      <Box sx={{ width: "20%" }}>
+        <FilterMultiSelect
+          name="type"
+          placeholder="Server type"
+          renderValueText="type(s)"
+          items={typesItems}
+          values={serverFilters.type}
+          onMultiSelectChange={onMultiSelectChange}
+        />
+      </Box>
+    </Stack>
   );
 }

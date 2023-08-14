@@ -8,6 +8,9 @@ import Box from "@mui/material/Box";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 export default function FilterableServerTable() {
+  // Input is super slow right now, not sure why
+  // Could probably also be included in serverFilters instead
+  const [filterText, setFilterText] = useState<string>("");
   const [serverFilters, setServerFilters] = useState<ServerFilters>({
     gameModes: [],
     maps: [],
@@ -33,12 +36,14 @@ export default function FilterableServerTable() {
     >
       <Box sx={{ p: 2 }}>
         <FilterBar
+          filterText={filterText}
+          onFilterTextChange={setFilterText}
           serverFilters={serverFilters}
           onMultiSelectChange={handleMultiSelectChange}
         />
       </Box>
       <Box>
-        <ServerTable serverFilters={serverFilters} />
+        <ServerTable filterText={filterText} serverFilters={serverFilters} />
       </Box>
     </Box>
   );

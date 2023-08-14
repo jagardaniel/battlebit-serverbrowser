@@ -14,11 +14,10 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {
-  filterText: string;
   serverFilters: ServerFilters;
 };
 
-export default function ServerTable({ filterText, serverFilters }: Props) {
+export default function ServerTable({ serverFilters }: Props) {
   const [data, setData] = useState<Server[]>([]);
   const [isLoading, setLoading] = useState(true);
   const rows: React.ReactElement[] = [];
@@ -42,7 +41,11 @@ export default function ServerTable({ filterText, serverFilters }: Props) {
   }, []);
 
   data.forEach((server) => {
-    if (server.Name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+    if (
+      server.Name.toLowerCase().indexOf(
+        serverFilters.serverName.toLowerCase()
+      ) === -1
+    ) {
       return;
     }
 

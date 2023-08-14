@@ -4,6 +4,13 @@ A pretty useless web based server browser for the game BattleBit Remastered.
 
 https://battlebit-browser.vercel.app
 
+#### Todo
+
+- Search is slow/delayed when many servers are listed. Not sure why.
+- Save and load filters from local storage
+- Add a button to clear all filters
+- Add a button to refresh the data
+
 ### Development
 
 #### Requirements

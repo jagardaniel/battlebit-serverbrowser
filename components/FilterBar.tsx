@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { ChangeEvent } from "react";
 import { ServerFilters } from "@/types/ServerFilters";
 import { GameModes } from "@/types/GameModes";
 import { Maps } from "@/types/Maps";
@@ -11,9 +11,8 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 
 type Props = {
-  filterText: string;
-  onFilterTextChange: Dispatch<SetStateAction<string>>;
   serverFilters: ServerFilters;
+  onFilterTextChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onMultiSelectChange: (event: SelectChangeEvent<string[]>) => void;
 };
 
@@ -40,9 +39,8 @@ const typesItems: MultiSelectItem[] = [
 ];
 
 export default function FilterBar({
-  filterText,
-  onFilterTextChange,
   serverFilters,
+  onFilterTextChange,
   onMultiSelectChange,
 }: Props) {
   return (
@@ -51,12 +49,12 @@ export default function FilterBar({
         <TextField
           hiddenLabel
           type="text"
-          name="searchName"
+          name="serverName"
           size="small"
-          placeholder="Search name... (slow)"
+          placeholder="Search name..."
           variant="outlined"
-          value={filterText}
-          onChange={(e) => onFilterTextChange(e.target.value)}
+          value={serverFilters.serverName}
+          onChange={onFilterTextChange}
         />
       </Box>
       <Box sx={{ width: "20%" }}>

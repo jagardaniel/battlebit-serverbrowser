@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import FilterBar from "./FilterBar";
 import ServerTable from "./ServerTable";
 import { ServerFilters } from "@/types/ServerFilters";
@@ -8,10 +8,10 @@ import Box from "@mui/material/Box";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 export default function FilterableServerTable() {
-  // Input is super slow right now, not sure why
-  // Could probably also be included in serverFilters instead
-  const [filterText, setFilterText] = useState<string>("");
+  // Input is pretty slow right now, not exactly sure why
+  // It seems to be better if you filter out most of the servers before searching
   const [serverFilters, setServerFilters] = useState<ServerFilters>({
+    serverName: "",
     gameModes: [],
     maps: [],
     regions: [],
@@ -19,6 +19,16 @@ export default function FilterableServerTable() {
   });
 
   const handleMultiSelectChange = (event: SelectChangeEvent<string[]>) => {
+    const { name, value } = event.target;
+    setServerFilters({
+      ...serverFilters,
+      [name]: value,
+    });
+  };
+
+  // This function is almost similar to the one above
+  // Can I generics in some way so only one of the functions are needed?
+  const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setServerFilters({
       ...serverFilters,
@@ -36,14 +46,13 @@ export default function FilterableServerTable() {
     >
       <Box sx={{ p: 2 }}>
         <FilterBar
-          filterText={filterText}
-          onFilterTextChange={setFilterText}
           serverFilters={serverFilters}
+          onFilterTextChange={handleTextChange}
           onMultiSelectChange={handleMultiSelectChange}
         />
       </Box>
       <Box>
-        <ServerTable filterText={filterText} serverFilters={serverFilters} />
+        <ServerTable serverFilters={serverFilters} />
       </Box>
     </Box>
   );

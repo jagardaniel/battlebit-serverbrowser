@@ -62,7 +62,12 @@ export default function ServerRow({ server }: Props) {
             <Stack>
               <Typography noWrap>{server.Name}</Typography>
               <Stack spacing={0.8} direction="row" alignItems="center">
-                <Typography variant="body1">{regionFlagChar}</Typography>
+                <Tooltip
+                  title={server.Region.split("_")[0]}
+                  placement="top-start"
+                >
+                  <Typography variant="body1">{regionFlagChar}</Typography>
+                </Tooltip>
                 <Typography variant="caption" color="text.secondary">
                   {gameMode} • {server.Map} ({server.MapSize}) • {server.Hz}Hz
                 </Typography>

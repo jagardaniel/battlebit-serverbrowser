@@ -7,20 +7,26 @@ import { ServerFilters } from "@/types/ServerFilters";
 import Box from "@mui/material/Box";
 import { SelectChangeEvent } from "@mui/material/Select";
 
+const initialServerFilters = {
+  serverName: "",
+  gameModes: [],
+  maps: [],
+  regions: [],
+  type: [],
+};
+
 export default function FilterableServerTable() {
   // Input is pretty slow right now, not exactly sure why
   // It seems to be better if you filter out most of the servers before searching
-  const [serverFilters, setServerFilters] = useState<ServerFilters>({
-    serverName: "",
-    gameModes: [],
-    maps: [],
-    regions: [],
-    type: [],
-  });
+  const [serverFilters, setServerFilters] =
+    useState<ServerFilters>(initialServerFilters);
 
   // Load server filters from local storage
   useEffect(() => {
-    const filters = JSON.parse(localStorage.getItem("serverFilters") || "{}");
+    const filters = JSON.parse(
+      localStorage.getItem("serverFilters") ||
+        JSON.stringify(initialServerFilters)
+    );
     if (filters) setServerFilters(filters);
   }, []);
 

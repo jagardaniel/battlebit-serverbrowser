@@ -29,7 +29,6 @@ export default function FilterMultiSelect({
         name={name}
         value={values}
         onChange={onMultiSelectChange}
-        inputProps={{ "aria-label": "Without label" }}
         renderValue={(selected) => {
           if (selected.length === 0) {
             return <Box sx={{ color: "text.disabled" }}>{placeholder}</Box>;

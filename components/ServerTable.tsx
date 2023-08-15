@@ -12,6 +12,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 
 type Props = {
   serverFilters: ServerFilters;
@@ -115,7 +116,19 @@ export default function ServerTable({ serverFilters }: Props) {
               </TableCell>
             </TableRow>
           ) : (
-            rows
+            <>
+              {rows.length > 0 ? (
+                rows
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3}>
+                    <Box sx={{ my: 2 }} display="flex" justifyContent="center">
+                      <Typography variant="body1">No servers found</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              )}
+            </>
           )}
         </TableBody>
       </Table>

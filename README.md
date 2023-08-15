@@ -7,9 +7,10 @@ https://battlebit-browser.vercel.app
 #### Todo
 
 - Search is slow/delayed when many servers are listed. Not sure why.
-- Save and load filters from local storage
 - Add a button to clear all filters
 - Add a button to refresh the data
+- Add pagination to the table
+- It is not possible to hover or select text in the last table row
 
 ### Development
 

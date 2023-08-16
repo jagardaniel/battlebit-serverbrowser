@@ -22,6 +22,8 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 
 type Props = {
+  servers: Server[];
+  isLoading: boolean;
   serverFilters: ServerFilters;
 };
 
@@ -88,31 +90,16 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
 const initialRowsPerPage = 20;
 
-export default function ServerTable({ serverFilters }: Props) {
-  const [data, setData] = useState<Server[]>([]);
-  const [isLoading, setLoading] = useState(true);
+export default function ServerTable({
+  servers,
+  isLoading,
+  serverFilters,
+}: Props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
   const rows: React.ReactElement[] = [];
 
-  async function getServers() {
-    try {
-      const response = await fetch(
-        "https://publicapi.battlebit.cloud/Servers/GetServerList"
-      );
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    // Load available servers from the public API
-    getServers();
-
     // Load rows per page from local storage
     const rowsFromStorage = JSON.parse(
       localStorage.getItem("rowsPerPage") || JSON.stringify(initialRowsPerPage)
@@ -139,7 +126,7 @@ export default function ServerTable({ serverFilters }: Props) {
     setPage(0);
   };
 
-  data.forEach((server) => {
+  servers.forEach((server) => {
     if (
       server.Name.toLowerCase().indexOf(
         serverFilters.serverName.toLowerCase()
@@ -172,6 +159,26 @@ export default function ServerTable({ serverFilters }: Props) {
 
     if (serverFilters.regions.length > 0) {
       if (!serverFilters.regions.some((region) => region == server.Region)) {
+        return;
+      }
+    }
+
+    if (serverFilters.maxPlayers.length > 0) {
+      if (
+        !serverFilters.maxPlayers.some(
+          (maxPlayers) => maxPlayers == server.MaxPlayers.toString()
+        )
+      ) {
+        return;
+      }
+    }
+
+    if (serverFilters.hasPassword.length > 0) {
+      if (
+        !serverFilters.hasPassword.some(
+          (hasPassword) => hasPassword == server.HasPassword.toString()
+        )
+      ) {
         return;
       }
     }

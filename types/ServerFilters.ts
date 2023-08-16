@@ -4,4 +4,6 @@ export type ServerFilters = {
   maps: string[];
   regions: string[];
   type: string[];
+  maxPlayers: string[];
+  hasPassword: string[];
 };

@@ -7,10 +7,9 @@ https://battlebit-browser.vercel.app
 #### Todo
 
 - Search is slow/delayed when many servers are listed. Not sure why.
-- Add a button to clear all filters
-- Add a button to refresh the data
-- Add pagination to the table
 - It is not possible to hover or select text in the last table row
+- Don't show pagination while loading or if no servers were found
+- Max height for multiselect list with many items.
 
 ### Development
 

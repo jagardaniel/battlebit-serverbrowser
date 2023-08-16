@@ -13,14 +13,86 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
 
 type Props = {
   serverFilters: ServerFilters;
 };
 
+interface TablePaginationActionsProps {
+  count: number;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    newPage: number
+  ) => void;
+}
+
+function TablePaginationActions(props: TablePaginationActionsProps) {
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5, mr: 2 }}>
+      <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0}>
+        <FirstPageIcon />
+      </IconButton>
+      <IconButton onClick={handleBackButtonClick} disabled={page === 0}>
+        <KeyboardArrowLeft />
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
+        <KeyboardArrowRight />
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
+        <LastPageIcon />
+      </IconButton>
+    </Box>
+  );
+}
+
+const initialRowsPerPage = 20;
+
 export default function ServerTable({ serverFilters }: Props) {
   const [data, setData] = useState<Server[]>([]);
   const [isLoading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
   const rows: React.ReactElement[] = [];
 
   async function getServers() {
@@ -38,8 +110,34 @@ export default function ServerTable({ serverFilters }: Props) {
   }
 
   useEffect(() => {
+    // Load available servers from the public API
     getServers();
+
+    // Load rows per page from local storage
+    const rowsFromStorage = JSON.parse(
+      localStorage.getItem("rowsPerPage") || JSON.stringify(initialRowsPerPage)
+    );
+    if (rowsFromStorage) setRowsPerPage(rowsFromStorage);
   }, []);
+
+  // Save rows per page to local storage
+  useEffect(() => {
+    localStorage.setItem("rowsPerPage", JSON.stringify(rowsPerPage));
+  }, [rowsPerPage]);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   data.forEach((server) => {
     if (
@@ -118,7 +216,7 @@ export default function ServerTable({ serverFilters }: Props) {
           ) : (
             <>
               {rows.length > 0 ? (
-                rows
+                rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               ) : (
                 <TableRow>
                   <TableCell colSpan={3}>
@@ -131,6 +229,27 @@ export default function ServerTable({ serverFilters }: Props) {
             </>
           )}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[
+                10,
+                20,
+                50,
+                100,
+                { value: -1, label: "All" },
+              ]}
+              colSpan={3}
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+              labelRowsPerPage="Servers per page"
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );

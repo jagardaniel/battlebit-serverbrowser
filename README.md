@@ -7,7 +7,6 @@ https://battlebit-browser.vercel.app
 #### Todo
 
 - Search is slow/delayed when many servers are listed. Not sure why.
-- It is not possible to hover or select text in the last table row
 - Max height for multiselect list with many items.
 - Click on each server row to show more detailed information (slide down)
 

@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 export default function Footer() {
   return (
     <Box px={1}>
-      <Grid container spacing={24} sx={{ justifyContent: "space-between" }}>
+      <Grid container sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography variant="caption">
             This site is not affiliated with BattleBit Remastered/SgtOkiDoki

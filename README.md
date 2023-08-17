@@ -8,8 +8,8 @@ https://battlebit-browser.vercel.app
 
 - Search is slow/delayed when many servers are listed. Not sure why.
 - It is not possible to hover or select text in the last table row
-- Don't show pagination while loading or if no servers were found
 - Max height for multiselect list with many items.
+- Click on each server row to show more detailed information (slide down)
 
 ### Development
 

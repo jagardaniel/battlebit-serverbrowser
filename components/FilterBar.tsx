@@ -13,6 +13,8 @@ import BackspaceIcon from "@mui/icons-material/Backspace";
 import IconButton from "@mui/material/IconButton";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
+import InputAdornment from "@mui/material/InputAdornment";
+import Search from "@mui/icons-material/Search";
 
 type Props = {
   serverFilters: ServerFilters;
@@ -73,6 +75,13 @@ export default function FilterBar({
             variant="outlined"
             value={serverFilters.serverName}
             onChange={onFilterTextChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search fontSize="small" sx={{ color: "text.disabled" }} />
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
         <Box sx={{ width: "20%" }}>
@@ -142,13 +151,13 @@ export default function FilterBar({
         <Box sx={{ width: "20%" }}>
           <Stack direction="row" spacing={1} sx={{ justifyContent: "right" }}>
             <Tooltip title="Clear filters" placement="left">
-              <IconButton color="primary">
-                <BackspaceIcon onClick={onClearFilters} />
+              <IconButton color="primary" onClick={onClearFilters}>
+                <BackspaceIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Refresh servers" placement="right">
-              <IconButton color="primary">
-                <RefreshIcon onClick={refreshServers} />
+              <IconButton color="primary" onClick={refreshServers}>
+                <RefreshIcon />
               </IconButton>
             </Tooltip>
           </Stack>

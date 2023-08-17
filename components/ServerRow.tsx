@@ -56,7 +56,8 @@ export default function ServerRow({ server }: Props) {
               <Image
                 src={"/images/maps/" + imageName + ".png"}
                 alt={server.Map}
-                fill
+                width={87}
+                height={43}
               />
             </Avatar>
             <Stack>

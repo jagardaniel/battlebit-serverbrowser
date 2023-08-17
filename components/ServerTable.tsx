@@ -183,7 +183,7 @@ export default function ServerTable({
       }
     }
 
-    rows.push(<ServerRow server={server} />);
+    rows.push(<ServerRow key={server.Name} server={server} />);
   });
 
   return (
@@ -236,27 +236,29 @@ export default function ServerTable({
             </>
           )}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[
-                10,
-                20,
-                50,
-                100,
-                { value: -1, label: "All" },
-              ]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-              labelRowsPerPage="Servers per page"
-            />
-          </TableRow>
-        </TableFooter>
+        {rows.length > 0 && (
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[
+                  10,
+                  20,
+                  50,
+                  100,
+                  { value: -1, label: "All" },
+                ]}
+                colSpan={3}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+                labelRowsPerPage="Servers per page"
+              />
+            </TableRow>
+          </TableFooter>
+        )}
       </Table>
     </TableContainer>
   );

@@ -13,9 +13,9 @@ export const Maps = [
   "OilDunes",
   "Old_District",
   "Old_Eduardovo",
-  "Old_MultuIslands", // need picture
+  "Old_MultuIslands",
   "Old_Namak",
-  "Old_OilDunes", // need picture
+  "Old_OilDunes",
   "River",
   "Salhan",
   "SandySunset",

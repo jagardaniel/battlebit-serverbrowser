@@ -3,6 +3,7 @@ export const GameModes = {
   CONQ: "Conquest",
   DOMI: "Domination",
   ELI: "Elimination",
+  FFA: "Free For All",
   FRONTLINE: "Frontlines",
   INFCONQ: "Infantry Conquest",
   RUSH: "Rush",

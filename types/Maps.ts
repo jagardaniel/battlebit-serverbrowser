@@ -24,4 +24,5 @@ export const Maps = [
   "VoxelLand",
   "Wakistan",
   "WineParadise",
+  "ZalfiBay",
 ];
